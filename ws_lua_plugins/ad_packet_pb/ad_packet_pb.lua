@@ -191,9 +191,9 @@ function pb_request_dissector(body, tree)
         end
     end
     -- refer
-    tree:add(pb_fields.refer, request.raw_referer)
+    tree:add(pb_fields.refer, request.raw_referer or "<nil>")
     -- type
-    tree:add(pb_fields.type, request.req_protocol)
+    tree:add(pb_fields.type, request.req_protocol or "<nil>")
     -- tojson
     json_str = json.encode(request)
     local jsontree = tree:add(pb_fields.tojson)
@@ -209,6 +209,7 @@ function pb_request_dissector(body, tree)
             start = stop + 1
         end
     end
+    return true
 end
 
 local data_dis = Dissector.get("data")
