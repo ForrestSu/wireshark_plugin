@@ -6,15 +6,17 @@ import (
 	"fmt"
 )
 
-func ParserPB(msg string) string {
+func ParserPB(msg *string) *string {
 	user := &UserInfo{
-		Message: msg,
+		Message: *msg,
 		Length:  100,
 		Cnt:     50,
 	}
+	var ret string
 	if data, err := json.Marshal(user); err == nil {
-		return string(data)
+		ret = string(data)
 	} else {
-		return fmt.Sprintf("err: %+v", err)
+		ret = fmt.Sprintf("err: %+v", err)
 	}
+	return &ret
 }
