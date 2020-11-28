@@ -13,12 +13,7 @@
 #endif
 #endif
 
-// #define EXPORT_API extern
-
-//EXPORT_API int wgo_add(lua_State *L);
-//EXPORT_API int wgo_sub(lua_State *L);
-
-LUALIB_API int wgo_add(lua_State *L)
+static int wgo_add(lua_State *L)
 {
     double op1 = luaL_checknumber(L, 1);
     double op2 = luaL_checknumber(L, 2);
@@ -26,7 +21,7 @@ LUALIB_API int wgo_add(lua_State *L)
     return 1;
 }
 
-LUALIB_API int wgo_sub(lua_State *L)
+static int wgo_sub(lua_State *L)
 {
     double op1 = luaL_checknumber(L, 1);
     double op2 = luaL_checknumber(L, 2);

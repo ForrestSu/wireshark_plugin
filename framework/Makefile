@@ -1,26 +1,22 @@
 
-.PHONY: default all clean build
+subdirs = c parser
+tasks = before $(subdirs) after
 
-# include dirs
-include_dir=/usr/local/include/lua
-# targets
-targets = wgo.so parse_pb.so
+.PHONY: clean $(tasks)
 
-default: build
-all: build
+default: $(tasks)
 
-build: ${targets}
+# 1 准备工作
+before:
+	mkdir -p build
+# 2 生成相关 so
+$(subdirs):
+	make -C $@ $(TARGET)
 
-# 1 generate cgo
-parse_pb.so: parser/parse_pb.go parser/dao.go
-	cd parser
-	go build -o $@ -buildmode=c-shared $^ 
-	cd ..
-
-# 2 gen c so
-wgo.so: c/wgo.c
-	gcc -shared -Wall -O2 -g -I${include_dir} -undefined dynamic_lookup  $^ -o $@
+# 3 在build文件夹, 编译测试代码
+after:
+	cp -r test_cases/* build/
+	make -C build $(TARGET)
 
 clean:
-	rm -rf ${targets}  ${targets}.dSYM
-
+	rm -rf build
