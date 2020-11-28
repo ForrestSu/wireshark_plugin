@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <cstdlib>
 #include <string>
 #include "libparser.h"
 
@@ -15,7 +16,7 @@ int main()
     if (cgo_ptr != nullptr)
     {
         decoded = std::string(cgo_ptr);
-        free(cgo_ptr); // 释放 golang 返回的C字符串
+        free((void*)cgo_ptr); // 释放 golang 返回的C字符串
     }
     printf("return decode msg == [%s]\n", decoded.c_str());
     return 0;
