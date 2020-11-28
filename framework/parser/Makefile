@@ -1,10 +1,13 @@
 
 .PHONY: default
 
-default: libparse_pb.so
+# src
+gosrc = $(wildcard *.go)
+
+default: libparser.so
 
 # 1 generate so
-libparse_pb.so: parse_pb.go dao.go
+libparser.so: $(gosrc)
 	go build -o $@ -buildmode=c-shared $^ 
 	# move to build dir
-	mv $@ libparse_pb.h ../build/ 
+	mv $@ libparser.h ../build/ 
