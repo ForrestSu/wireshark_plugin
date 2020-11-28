@@ -1,3 +1,5 @@
+# macOS
+.DS_Store
 # Compiled Lua sources
 luac.out
 
@@ -27,8 +29,6 @@ luac.out
 
 # Shared objects (inc. Windows DLLs)
 *.dll
-*.so
-*.so.*
 *.dylib
 
 # Executables
