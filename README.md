@@ -18,7 +18,7 @@ This is a simple, extensible wireshark universal plug-in solution.
 
 ## lua_plugins
 
-存放简单的 lua 插件，可供参考学习。
+一些简单的 lua 插件，可供参考学习。
 
 ## 运行环境说明
 

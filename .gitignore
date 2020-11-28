@@ -39,3 +39,12 @@ luac.out
 *.x86_64
 *.hex
 
+## ignore
+*.dSYM/
+3rdparty/lua-protobuf
+
+*.so
+
+# 保留这两个so
+!/plugins_lua/ad_packet_pb/libs/pb.so
+!/learn_lua/pb52.so
