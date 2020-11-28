@@ -27,7 +27,7 @@ static int go_caller_parser(lua_State *L)
     const char* name = "pb";
     const char* msg = "hello world!";
 
-    const char* decoded = call_cgo_parse(name, strlen(name), msg, strlen(msg));
+    const char* decoded = call_cgo_parser(name, strlen(name), msg, strlen(msg));
     if (decoded != NULL) {
         printf("line = %d, decoded = %s\n", __LINE__, decoded);
         free((void*)decoded);

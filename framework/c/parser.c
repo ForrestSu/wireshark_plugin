@@ -2,7 +2,7 @@
 #include "parser.h"
 #include "../build/libparser.h"
 
-const char *call_cgo_parse(const char *name_buff, int len1, const char *msg_buff, int len2)
+const char *call_cgo_parser(const char *name_buff, int len1, const char *msg_buff, int len2)
 {
      // params
     GoString goName;
