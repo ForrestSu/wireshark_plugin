@@ -6,8 +6,9 @@ import (
 	"fmt"
 )
 
-func ParserPB(msg *string) *string {
+func ParserPB(name, msg *string) *string {
 	user := &UserInfo{
+		Name:  *name,
 		Message: *msg,
 		Length:  100,
 		Cnt:     50,
