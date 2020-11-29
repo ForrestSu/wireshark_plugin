@@ -3,8 +3,7 @@
 #include <string>
 #include "libparser.h"
 
-int main()
-{
+int main() {
     std::string name = "pb";
     std::string msg = "hello world!";
     // params
@@ -12,8 +11,7 @@ int main()
     GoString goMsg{msg.c_str(), (long)msg.length()};
     // call
     struct Parser_return ret = Parser(goName, goMsg);
-    if (ret.r0 != nullptr)
-    {
+    if (ret.r0 != nullptr) {
         std::string decoded = std::string(ret.r0, ret.r1);
         printf("return decode msg == [%s]\n", decoded.c_str());
     }

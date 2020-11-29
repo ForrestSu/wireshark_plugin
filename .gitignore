@@ -1,5 +1,7 @@
 # macOS
 .DS_Store
+.idea/
+.vscode/
 # Compiled Lua sources
 luac.out
 
@@ -48,3 +50,5 @@ luac.out
 *.dSYM/
 3rdparty/lua-protobuf
 build/
+
+/core/parser/parser

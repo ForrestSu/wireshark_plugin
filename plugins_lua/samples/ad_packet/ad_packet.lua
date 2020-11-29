@@ -1,5 +1,4 @@
 -- @brief  Wireshark plugin for ad_packet Protocol
--- @author forrestsun
 -- @date   2020.10.30
 -- @doc    https://wiki.wireshark.org/LuaAPI
 

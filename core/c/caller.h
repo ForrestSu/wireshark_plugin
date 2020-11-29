@@ -1,5 +1,5 @@
-#ifndef go_caller_h
-#define go_caller_h
+#ifndef caller_h
+#define caller_h
 
 #include <string.h>
 #include <stddef.h>

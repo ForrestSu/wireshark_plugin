@@ -9,8 +9,8 @@
 #include "lauxlib.h"
 
 // parser.h
-#include "go_caller.h"
-#include "parser.h"
+#include "caller.h"
+#include "cgo_call.h"
 
 // lua5.2 new api: luaL_newlib()
 #if LUA_VERSION_NUM < 502
@@ -44,7 +44,7 @@ static pb_Slice lpb_toslice(lua_State *L, int idx) {
     if (type == LUA_TSTRING) {
         size_t len;
         const char *s = lua_tolstring(L, idx, &len);
-        printf("line = %d, is lua string.\n", __LINE__);
+        // printf("line = %d, is lua string.\n", __LINE__);
         return pb_lslice(s, len);
     } else if (type == LUA_TUSERDATA) {
         pb_Buffer *buffer;
@@ -83,7 +83,6 @@ static int Lgo_demo(lua_State *L)
 */
 
 static int do_parser(lua_State *L, pb_Slice msg, int start) {
-    
      // 从 lua 获取name,msg, 然后传给 cgo
     pb_Slice name = lpb_checkslice(L, 1);
     CSlice input_name;
@@ -93,7 +92,7 @@ static int do_parser(lua_State *L, pb_Slice msg, int start) {
     CSlice input_msg;
     input_msg.data = msg.start;
     input_msg.len = pb_len(msg);
-    
+
     CSlice decoded = call_cgo_parser(input_name, input_msg);
     lua_pushlstring(L, decoded.data, decoded.len);
     // free goString
@@ -101,15 +100,14 @@ static int do_parser(lua_State *L, pb_Slice msg, int start) {
     return 1;
 }
 
-static int Lgo_caller_parser(lua_State *L){
+static int Lgo_caller_parser(lua_State *L) {
     return do_parser(L, lua_isnoneornil(L, 2) ?
         pb_lslice(NULL, 0) :
         lpb_checkslice(L, 2), 3);
 }
 
 // open wgo library
-LUALIB_API int luaopen_go_caller(lua_State *L)
-{
+LUALIB_API int luaopen_go_caller(lua_State *L) {
     luaL_Reg export_libs[] = {
         {"parser", Lgo_caller_parser},
         {NULL, NULL},
