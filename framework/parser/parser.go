@@ -1,7 +1,14 @@
 // parser.go
 package main
 
+/*
+#include "stdlib.h"
+*/
 import "C"
+
+import (
+	"unsafe"
+)
 
 // 入口: 支持各种协议解析
 func parserImpl(name, msg *string) *string {
@@ -14,9 +21,14 @@ func parserImpl(name, msg *string) *string {
 }
 
 //export Parser
-func Parser(name, msg string) *C.char {
+func Parser(name, msg string) (*C.char, int) {
 	gostr := parserImpl(&name, &msg)
-	return C.CString(*gostr)
+	return C.CString(*gostr), 10
+}
+
+//export FreeCString
+func FreeCString(cstr *C.char) {
+	C.free(unsafe.Pointer(cstr))
 }
 
 func main() {

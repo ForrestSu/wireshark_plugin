@@ -86,13 +86,18 @@ static int do_parser(lua_State *L, pb_Slice msg, int start) {
     
      // 从 lua 获取name,msg, 然后传给 cgo
     pb_Slice name = lpb_checkslice(L, 1);
+    CSlice input_name;
+    input_name.data = name.start;
+    input_name.len = pb_len(name);
 
-    const char* decoded = call_cgo_parser(name.start, pb_len(name), msg.start, pb_len(msg));
-    if (decoded != NULL) {
-        printf("line = %d, decoded = %s\n", __LINE__, decoded);
-        free((void*)decoded);
-    }
-    lua_pushnumber(L, 100);
+    CSlice input_msg;
+    input_msg.data = msg.start;
+    input_msg.len = pb_len(msg);
+    
+    CSlice decoded = call_cgo_parser(input_name, input_msg);
+    lua_pushlstring(L, decoded.data, decoded.len);
+    // free goString
+    call_cgo_free_GoString(decoded);
     return 1;
 }
 

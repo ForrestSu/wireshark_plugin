@@ -11,13 +11,11 @@ int main()
     GoString goName{name.c_str(), (long)name.length()};
     GoString goMsg{msg.c_str(), (long)msg.length()};
     // call
-    const char *cgo_ptr = Parser(goName, goMsg);
-    std::string decoded;
-    if (cgo_ptr != nullptr)
+    struct Parser_return ret = Parser(goName, goMsg);
+    if (ret.r0 != nullptr)
     {
-        decoded = std::string(cgo_ptr);
-        free((void*)cgo_ptr); // 释放 golang 返回的C字符串
+        std::string decoded = std::string(ret.r0, ret.r1);
+        printf("return decode msg == [%s]\n", decoded.c_str());
     }
-    printf("return decode msg == [%s]\n", decoded.c_str());
     return 0;
 }
