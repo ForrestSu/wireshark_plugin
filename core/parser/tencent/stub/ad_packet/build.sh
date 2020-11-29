@@ -1,0 +1,1 @@
+easyjson -all ad_packet.pb.go

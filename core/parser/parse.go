@@ -10,6 +10,7 @@ import (
 
 	"github.com/ForrestSu/wireshark_plugin/core/parser/codec"
 	_ "github.com/ForrestSu/wireshark_plugin/core/parser/examples"
+	_ "github.com/ForrestSu/wireshark_plugin/core/parser/tencent"
 )
 
 // doParse 协议解析入口
