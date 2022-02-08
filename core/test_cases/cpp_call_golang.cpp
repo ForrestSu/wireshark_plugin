@@ -10,10 +10,8 @@ int main() {
     GoString goName{name.c_str(), (long)name.length()};
     GoString goMsg{msg.c_str(), (long)msg.length()};
     // call
-    struct Parser_return ret = Parser(goName, goMsg);
-    if (ret.r0 != nullptr) {
-        std::string decoded = std::string(ret.r0, ret.r1);
-        printf("return decode msg == [%s]\n", decoded.c_str());
-    }
+    Parse_return ret = Parse(goName, goMsg);
+    std::string decoded = std::string(ret.r0, ret.r1);
+    printf("return decode msg == [%s]\n", decoded.c_str());
     return 0;
 }

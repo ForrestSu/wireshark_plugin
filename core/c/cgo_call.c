@@ -13,9 +13,9 @@ CSlice call_cgo_parser(CSlice name, CSlice msg) {
     goMsg.p = msg.data;
     goMsg.n = (int64_t)msg.len;
     // call
-    GoString ret = Parse(goName, goMsg);
-    // don't forget free GoString(ret.p0)
-    CSlice sli = {ret.p, ret.n};
+    struct Parse_return ret = Parse(goName, goMsg);
+    // don't forget free GoString(ret.r0)
+    CSlice sli = {ret.r0, ret.r1};
     return sli;
 }
 

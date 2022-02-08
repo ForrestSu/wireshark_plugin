@@ -23,8 +23,10 @@ func doParse(name string, msg []byte) string {
 }
 
 //export Parse
-func Parse(name string, msg string) string {
-	return doParse(name, []byte(msg))
+func Parse(name string, msg string) (*C.char, int) {
+	goStr := doParse(name, []byte(msg))
+	// https://stackoverflow.com/questions/48686763/cgo-result-has-go-pointer
+	return C.CString(goStr), len(goStr)
 }
 
 //export FreeGoString
