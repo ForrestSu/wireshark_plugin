@@ -106,7 +106,8 @@ function adPacket_dissector(buffer, pinfo, tree)
         return true
     end
 
-    local ref_id = show_refId_link(is_req_packet, pinfo, seq, subtree)
+    -- show_refId_link(is_req_packet, pinfo, seq, subtree)
+    local ref_id = 0
 
     local body = buffer(16, buf_len - 16)
 
@@ -141,22 +142,24 @@ function pb_request_dissector(is_req_packet, body, pinfo, tree)
     local input_lua_str = body:raw(body:offset(), body:len())
     local decoded_str = wgo.parser(proto_name, input_lua_str)
 
+    local json_tree = tree:add(pb_fields.tojson, decoded_str)
+
     -- dump到本地文件
     -- if is_req_packet then
     --     if pinfo.number < 1000 then
-    --         local file_name = "case_".. pinfo.number .. ".json"
+    --         local file_name = "case_" .. pinfo.number .. ".json"
     --         write_to_tmp_file(file_name, decoded_str)
     --     end
     -- end
 
     -- tojson
-    local barr = ByteArray.new(decoded_str, true)
-    local tvb = ByteArray.tvb(barr, "JsonTree")
-    json_dis:call(tvb, pinfo, tree)
+    -- local barr = ByteArray.new(decoded_str, true)
+    -- local tvb = ByteArray.tvb(barr, "JsonTree")
+    -- json_dis:call(tvb, pinfo, tree)
 
-    local json_tree = tree:add(pb_fields.tojson, decoded_str)
-    -- 注意循环显示一个长字符串
-    show_long_string(json_tree, decoded_str)
+    -- local json_tree = tree:add(pb_fields.tojson, decoded_str)
+    -- -- 注意循环显示一个长字符串
+    -- show_long_string(json_tree, decoded_str)
     return true
 end
 

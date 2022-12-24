@@ -55,6 +55,9 @@ tshark -r udp.cap > /dev/null  9.05s user 0.94s system 105% cpu 9.479 total
 
 一些常规的 lua 插件，可供参考学习。
 
+wireshark 个人lua插件目录:
+> ~/.local/lib/wireshark/plugins/
+
 ## 6 依赖
 
 - lua 5.2.4 开发环境
