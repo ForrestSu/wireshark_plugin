@@ -34,8 +34,12 @@ fields.HeaderLen = ProtoField.uint16(NAME .. ".HeaderLen", "HeaderLen", base.DEC
 fields.StreamID = ProtoField.uint32(NAME .. ".StreamID", "StreamID", base.DEC)
 fields.Version = ProtoField.uint8(NAME .. ".Version", "Version", base.DEC, VersionText)
 fields.Reserved = ProtoField.uint8(NAME .. ".Reserved", "Reserved", base.DEC)
-fields.Header = ProtoField.string(NAME .. ".Header", "Header", base.ASCII)
-fields.Body = ProtoField.string(NAME .. ".Body", "Body", base.ASCII)
+fields.Header = ProtoField.string(NAME .. ".Header", "Header", base.NONE)
+fields.Body = ProtoField.string(NAME .. ".Body", "Body", base.NONE)
+
+
+-- pb协议解析器
+local protobuf_dissector = Dissector.get("protobuf")
 
 -- 3. Protocol Decoder Function
 function tRPCdissector(buffer, pinfo, tree)
@@ -79,20 +83,26 @@ function tRPCdissector(buffer, pinfo, tree)
 
     local version = buffer(14, 1):uint()
     local headerLen = buffer(8, 2):uint()
-    local header = buffer(16, headerLen)
-    subtree:add(fields.Header, header)
+    local headerBuf = buffer(16, headerLen)
 
+    -- 这里要填的就是trpc.proto协议文件中的Message名称
+    pinfo.private["pb_msg_type"] = "message,trpc.RequestProtocol"
+    protobuf_dissector:call(headerBuf:tvb(), pinfo, subtree)
+
+    -- body
     local totalLen = buffer(4, 4):uint()
-    local body = buffer(16 + headerLen, totalLen - headerLen - 16)
+    local bodyLen = totalLen - headerLen - 16
+    local body = buffer(16 + headerLen, bodyLen)
     subtree:add(fields.Body, body)
 
     -- 3.4 finally Info
-    pinfo.cols.info:append(" Len=" .. totalLen .. ", Ver=" .. version)
+    pinfo.cols.info:append(" Len=" .. totalLen .. ", BodyLen=" .. bodyLen .. ", Ver=" .. version)
     pinfo.cols.info:append(" [tRPC Protocol Data]")
 
     return true
 end
 
+-- 协议解析器
 local data_dis = Dissector.get("data")
 
 function trpcProto.dissector(buffer, pinfo, tree)
