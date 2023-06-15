@@ -135,7 +135,7 @@ function jce_dissector(is_req_packet, header_tree, body, pinfo, jce_tree)
         proto_name = "Ajce"
     end
     -- to lua string
-    local input_lua_str = body:raw(body:offset(), body:len())
+    local input_lua_str = body:raw()
     local decoded_str = wgo.parser(proto_name, input_lua_str)
     -- get reqId if start with '$'
     local seqId = 0

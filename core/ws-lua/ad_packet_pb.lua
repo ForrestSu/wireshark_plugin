@@ -139,10 +139,9 @@ function pb_request_dissector(is_req_packet, body, pinfo, tree)
         proto_name = "Apb"
     end
     -- to lua string
-    local input_lua_str = body:raw(body:offset(), body:len())
+    local input_lua_str = body:raw()
     local decoded_str = wgo.parser(proto_name, input_lua_str)
 
-    local json_tree = tree:add(pb_fields.tojson, decoded_str)
 
     -- dump到本地文件
     -- if is_req_packet then
@@ -157,9 +156,9 @@ function pb_request_dissector(is_req_packet, body, pinfo, tree)
     -- local tvb = ByteArray.tvb(barr, "JsonTree")
     -- json_dis:call(tvb, pinfo, tree)
 
-    -- local json_tree = tree:add(pb_fields.tojson, decoded_str)
-    -- -- 注意循环显示一个长字符串
-    -- show_long_string(json_tree, decoded_str)
+    local json_tree = tree:add(pb_fields.tojson, decoded_str)
+    -- 注意循环显示一个长字符串
+    show_long_string(json_tree, decoded_str)
     return true
 end
 
